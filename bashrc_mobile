@@ -1,0 +1,9 @@
+
+export PATH=$PATH:$HOME/mobilehacking/git/jadx/build/jadx/bin
+
+alias connect_host='ssh -Nf -L 5555:localhost:5555 amitag@172.16.70.1'
+alias connect_mobile='adb connect 127.0.0.1:5555'
+alias connect_mobile_disc='adb disconnect 127.0.0.1:5555'
+alias mobile_frida='adb push ~/mobilehacking/downloads/frida-server-15.1.14-android-arm /data/local/tmp/frida-server; adb shell "chmod 755 /data/local/tmp/frida-server"; adb shell "/data/local/tmp/frida-server" & '
+alias adb_devices='adb devices'
+

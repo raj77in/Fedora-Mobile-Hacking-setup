@@ -23,6 +23,8 @@ GDIR="$BDIR/git"
 mkdir -p $BDIR $DDIR
 cd $BDIR
 
+echo "Forward 5555 to your host :) ssh -Nf -L 5555:localhost:5555 amitag@172.16.70.1"
+
 ## Check for the OS
 if [[ "$(cat /etc/redhat-release)" =~ Fedora.release* ]]
 then
@@ -78,7 +80,7 @@ fi
 
 
 ## Install some packages with dnf and sudo
-sudo dnf install -y vim python2.7 android-tools androguard.noarch andriller androwarn adb-enhanced npm java-11-openjdk-devel wkhtmltopdf python3-gunicorn
+sudo dnf install -y vim python2.7 android-tools androguard.noarch andriller androwarn adb-enhanced npm java-11-openjdk-devel wkhtmltopdf python3-gunicorn lynx
 cat <<EOF | tee -a $BDIR/README.txt
 # Readme for Mobile Hacking Setup
 
@@ -97,8 +99,30 @@ Installed the following
 - jarsigner
 EOF
 
+## git repos
+cat <<EOF | tee -a $BDIR/README.txt
+
+## Git repos
+
+We will clone some useful git repos.
+
+EOF
+while read line
+do
+
+    git_clone "$line" 
+    echo "- $(basename $line)" >> $BDIR/README.txt
+
+done < $BDIR/git-urls
+
 ## Install frida
 pip install --user frida-tools
+frida_ver=$(lynx -dump https://github.com/frida/frida/releases/|grep server|sed -E '2,$d;s/.*frida-server-([0-9\.]*)-.*/\1/')
+download_file "https://github.com/frida/frida/releases/download/15.1.14/frida-server-$ver-android-arm.xz"
+download_file "https://github.com/frida/frida/releases/download/15.1.14/frida-server-$ver-android-arm64.xz"
+download_file "https://github.com/frida/frida/releases/download/15.1.14/frida-server-$ver-android-x86.xz"
+download_file "https://github.com/frida/frida/releases/download/15.1.14/frida-server-$ver-android-x86_64.xz"
+
 cat <<EOF | tee -a $BDIR/README.txt
 
 
@@ -134,19 +158,13 @@ download_file "https://github.com/mwrlabs/drozer/releases/download/2.4.4/drozer-
 pip2 install drozer
 
 
-## git repos
-git_clone https://github.com/MobSF/Mobile-Security-Framework-MobSF
-#podman run -it  docker.io/opensecurity/mobsfscan
-# podman run -p8000:8000 -it docker.io/tutems/mobsf
-git_clone https://github.com/dineshshetty/Android-InsecureBankv2
-git_clone https://github.com/dweinstein/awesome-frida
-git clone https://github.com/m0bilesecurity/RMS-Runtime-Mobile-Security
 
 ## Install rms
 
 setup_npm_local
 npm install -g rms-runtime-mobile-security
 cat <<EOF | tee -a $BDIR/README.txt
+## Setup RMS
 
 Make sure frida-server is up and running on the target device.
 
@@ -162,9 +180,10 @@ Start enjoying RMS iphonefire
 EOF
 
 ## Install and setup Objection
-git_clone  https://github.com/sensepost/objection
 pip3 install --upgrade objection
 cat <<EOF | tee -a $BDIR/README.txt
+## Objection
+
 objection is installed, you can now run :
 objection -h
 
@@ -179,10 +198,8 @@ objection explore
 EOF
 
 # Install fernflower
-git_clone https://github.com/fesh0r/fernflower
-cd fernflower
+cd $GDIR/fernflower
 ./gradlew build
-cd -
 
 cat <<EOF | tee -a $BDIR/README.txt
 This is java decompiler and you can use it like this:
@@ -192,28 +209,25 @@ java -jar fernflower.jar -dgs=1 c:\Temp\binary\library.jar c:\Temp\binary\Boot.c
 EOF
 
 ## enjarify apk to java
-git_clone https://github.com/Storyyeller/enjarify
 cat <<EOF | tee -a $BDIR/README.txt
 cd $GDIR/enjarify
 python3 -O -m enjarify.main yourapp.apk
 EOF
 
-git_clone https://github.com/ac-pm/Inspeckage
 
 
 cat <<EOF | tee -a $BDIR/README.txt
+## Inspeckage
 Inspeckage is a tool developed to offer dynamic analysis of Android applications. By applying hooks to functions of the Android API, Inspeckage will help you understand what an Android application is doing at runtime.
 
 EOF
 
-git_clone https://github.com/as0ler/Android-Examples
 cat <<EOF | tee -a $BDIR/README.txt
 Some example endroid apks for practice
 
 EOF
 
 ## PIDCat
-git_clone https://github.com/JakeWharton/pidcat
 cat <<EOF  | tee -a $BDIR/README.txt
 An update to Jeff Sharkey's excellent logcat color script which only shows log entries for processes from a specific application package.
 
@@ -226,7 +240,6 @@ pidcat com.oprah.bees.android
 EOF
 
 ## QArk
-git_clone https://github.com/linkedin/qark
 ( cd $GDIR/qark
 pip install -r requirements.txt
 pip install . --user
@@ -252,11 +265,7 @@ Java source code files:
 ~ qark --java path/to/specific/java/file.java
 EOF
 
-## MARA Framework
-git_clone https://github.com/xtiankisutsa/MARA_Framework
-
 ## FireBaseScanner
-git https://github.com/shivsahni/FireBaseScanner
 download_file 'https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf'
 
 
@@ -278,7 +287,6 @@ sudo chmod +x /usr/local/bin/apktool
 
 ## dex2jar
 
-git_clone https://github.com/pxb1988/dex2jar
 
 cat <<EOF  | tee -a $BDIR/README.txt
 
@@ -286,7 +294,6 @@ cat <<EOF  | tee -a $BDIR/README.txt
 
 EOF
 ## jadx
-git_clone https://github.com/skylot/jadx
 cd $GDIR/jadx
 ./gradlew dist
 echo 'export PATH=$PATH:$HOME/mobilehacking/git/jadx/build/jadx/bin' >> ~/.bashrc
@@ -317,12 +324,6 @@ See these features in action here: jadx-gui features overview
 EOF
 
 
-## Vulnerable apk
-git_clone https://github.com/atilsamancioglu/MS1-SecureTweet
-git_clone https://github.com/atilsamancioglu/MS4-DetectJail
-git_clone https://github.com/atilsamancioglu/MS2-WordGame
-git_clone https://github.com/atilsamancioglu/MS3-MyReverseApp
-
 cat <<EOF  | tee -a $BDIR/README.txt
 
 Secure tweet vulnerable app.
@@ -345,7 +346,6 @@ However, Cycript was specifically designed as a programming environment and main
 EOF
 
 ## MSTG
-git_clone https://github.com/OWASP/owasp-mstg
 download_file 'https://github.com/OWASP/owasp-mstg/releases/download/v1.4.0/OWASP_MSTG-v1.4.0.pdf'
 
 ## Cydia Impactor for Linux
@@ -354,13 +354,6 @@ cd $DDIR
 mkdir cydia-impactor
 cd cydia-impactor
 tar xvf ../cydia-impactor.tgz
-
-## vAPI
-
-git_clone https://github.com/roottusk/vapi
-
-## sign jar files
-git_clone https://github.com/appium-boneyard/sign
 
 cat <<EOF  | tee -a $BDIR/README.txt
 
@@ -384,7 +377,6 @@ jarsigner -storepass password -keypass password \
 EOF
 
 ## AppMon
-git_clone https://github.com/dpnishant/appmon
 pip install argparse frida flask termcolor dataset htmlentities --upgrade
 
 cat <<EOF  | tee -a $BDIR/README.txt
@@ -394,12 +386,32 @@ AppMon is an automated framework for monitoring and tampering system API calls o
 EOF
 
 
-git_clone https://github.com/shivsahni/FireBaseScanner.git
 
 cat <<EOF |tee -a $BDIR/README.txt
 Installed FireBaseScanner
 
 EOF
+
+## Burp
+wget -c  "https://portswigger.net/burp/releases/download?product=community&version=2021.12.1&type=Jar" -O $DDIR/burp.jar
+cat <<EOF >$DDIR/burp
+java -jar $DDIR/burp.jar
+EOF
+sudo cp $DDIR/burp /usr/local/bin/burp
+sudo chmod +x /usr/local/bin/burp
+
+## ZAP
+cd $DDIR
+l="https://github.com/zaproxy/zaproxy/releases/download/v2.11.1/ZAP_2.11.1_Linux.tar.gz"
+download_file "$l"
+tar xvzf "$(basename $l)"
+cat <<EOF | sudo tee /usr/local/bin/zap
+cd $DDIR/ZAP_2.11.1
+./zap.sh
+EOF
+sudo chmod +x /usr/local/bin/zap
+
+
 
 
 cat <<EOF |tee -a $BDIR/README.txt
@@ -513,5 +525,3 @@ then
     sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
     sudo dnf install code
 fi
-
-
