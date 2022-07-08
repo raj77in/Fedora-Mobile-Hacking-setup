@@ -97,6 +97,17 @@ Installed the following
 - androwarn
 - npm
 - jarsigner
+
+## Drozer
+
+```bash
+adb devices
+adb forward tcp:31415 tcp:31415
+## start drozer agent on mobile
+drozer console connect
+
+```
+
 EOF
 
 ## git repos
