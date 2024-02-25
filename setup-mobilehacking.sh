@@ -20,7 +20,10 @@
 BDIR=~/mobilehacking/
 DDIR="$BDIR/downloads"
 GDIR="$BDIR/git"
+
+
 mkdir -p $BDIR $DDIR
+cp git-urls  $BDIR
 cd $BDIR
 
 # echo "Forward 5555 to your host :) ssh -Nf -L 5555:localhost:5555 amitag@172.16.70.1"
@@ -81,7 +84,8 @@ fi
 
 ## Install some packages with dnf and sudo
 sudo dnf install -y vim python2.7 android-tools adb-enhanced npm java-11-openjdk-devel wkhtmltopdf python3-gunicorn lynx
-cat <<EOF | tee -a $BDIR/README.txt
+
+cat <<'EOF' | tee -a $BDIR/README.txt
 # Readme for Mobile Hacking Setup
 
 ## Install with dnf on Fedora 35
@@ -111,7 +115,7 @@ drozer console connect
 EOF
 
 ## git repos
-cat <<EOF | tee -a $BDIR/README.txt
+cat <<'EOF' | tee -a $BDIR/README.txt
 
 ## Git repos
 
@@ -134,7 +138,7 @@ download_file "https://github.com/frida/frida/releases/download/15.1.14/frida-se
 download_file "https://github.com/frida/frida/releases/download/15.1.14/frida-server-$ver-android-x86.xz"
 download_file "https://github.com/frida/frida/releases/download/15.1.14/frida-server-$ver-android-x86_64.xz"
 
-cat <<EOF | tee -a $BDIR/README.txt
+cat <<'EOF' | tee -a $BDIR/README.txt
 
 
 ## Frida
@@ -145,7 +149,7 @@ EOF
 ## Download and install get-pip for python 2.7
 download_file "https://bootstrap.pypa.io/pip/2.7/get-pip.py"
 python2.7 -m get-pip.py
-cat <<EOF  | tee -a $BDIR/README.txt
+cat <<'EOF'  | tee -a $BDIR/README.txt
 
 ## python2.7 pip
 
@@ -174,7 +178,7 @@ pip2 install drozer
 
 setup_npm_local
 npm install -g rms-runtime-mobile-security
-cat <<EOF | tee -a $BDIR/README.txt
+cat <<'EOF' | tee -a $BDIR/README.txt
 ## Setup RMS
 
 Make sure frida-server is up and running on the target device.
@@ -192,7 +196,7 @@ EOF
 
 ## Install and setup Objection
 pip3 install --upgrade objection
-cat <<EOF | tee -a $BDIR/README.txt
+cat <<'EOF' | tee -a $BDIR/README.txt
 ## Objection
 
 objection is installed, you can now run :
@@ -212,7 +216,7 @@ EOF
 cd $GDIR/fernflower
 ./gradlew build
 
-cat <<EOF | tee -a $BDIR/README.txt
+cat <<'EOF' | tee -a $BDIR/README.txt
 This is java decompiler and you can use it like this:
 java -jar fernflower.jar -hes=0 -hdc=0 c:\Temp\binary\ -e=c:\Java\rt.jar c:\Temp\source\
 
@@ -220,26 +224,26 @@ java -jar fernflower.jar -dgs=1 c:\Temp\binary\library.jar c:\Temp\binary\Boot.c
 EOF
 
 ## enjarify apk to java
-cat <<EOF | tee -a $BDIR/README.txt
+cat <<'EOF' | tee -a $BDIR/README.txt
 cd $GDIR/enjarify
 python3 -O -m enjarify.main yourapp.apk
 EOF
 
 
 
-cat <<EOF | tee -a $BDIR/README.txt
+cat <<'EOF' | tee -a $BDIR/README.txt
 ## Inspeckage
 Inspeckage is a tool developed to offer dynamic analysis of Android applications. By applying hooks to functions of the Android API, Inspeckage will help you understand what an Android application is doing at runtime.
 
 EOF
 
-cat <<EOF | tee -a $BDIR/README.txt
+cat <<'EOF' | tee -a $BDIR/README.txt
 Some example endroid apks for practice
 
 EOF
 
 ## PIDCat
-cat <<EOF  | tee -a $BDIR/README.txt
+cat <<'EOF'  | tee -a $BDIR/README.txt
 An update to Jeff Sharkey's excellent logcat color script which only shows log entries for processes from a specific application package.
 
 During application development you often want to only display log messages coming from your app. Unfortunately, because the process ID changes every time you deploy to the phone it becomes a challenge to grep for the right thing.
@@ -256,7 +260,7 @@ pip install -r requirements.txt
 pip install . --user
 )
 
-cat <<EOF  | tee -a $BDIR/README.txt
+cat <<'EOF'  | tee -a $BDIR/README.txt
 This tool is designed to look for several security related Android application vulnerabilities, either in source code or packaged APKs. The tool is also capable of creating "Proof-of-Concept" deployable APKs and/or ADB commands, capable of exploiting many of the vulnerabilities it finds. There is no need to root the test device, as this tool focuses on vulnerabilities that can be exploited under otherwise secure conditions.
 
 qark --apk path/to/my.apk
@@ -280,7 +284,7 @@ EOF
 download_file 'https://cdn2.hubspot.net/hubfs/436053/Appthority%20Q2-2018%20MTR%20Unsecured%20Firebase%20Databases.pdf'
 
 
-cat <<EOF  | tee -a $BDIR/README.txt
+cat <<'EOF'  | tee -a $BDIR/README.txt
 Once the script is downloaded, run the script with the required arguments. We can either provide the APK file as an input as shown below:
 
 python FirebaseMisconfig.py --path /home/shiv/TestAPK/test.apk
@@ -299,7 +303,7 @@ sudo chmod +x /usr/local/bin/apktool
 ## dex2jar
 
 
-cat <<EOF  | tee -a $BDIR/README.txt
+cat <<'EOF'  | tee -a $BDIR/README.txt
 
 ## Dex2jar
 
@@ -309,7 +313,7 @@ cd $GDIR/jadx
 ./gradlew dist
 echo 'export PATH=$PATH:$HOME/mobilehacking/git/jadx/build/jadx/bin' >> ~/.bashrc
 
-cat <<EOF  | tee -a $BDIR/README.txt
+cat <<'EOF'  | tee -a $BDIR/README.txt
 jadx - Dex to Java decompiler
 
 
@@ -335,7 +339,7 @@ See these features in action here: jadx-gui features overview
 EOF
 
 
-cat <<EOF  | tee -a $BDIR/README.txt
+cat <<'EOF'  | tee -a $BDIR/README.txt
 
 Secure tweet vulnerable app.
 
@@ -343,7 +347,7 @@ EOF
 
 ## cycript
 wget -c -O $DDIR/cycript.zip https://cydia.saurik.com/api/latest/3
-cat <<EOF  | tee -a $BDIR/README.txt
+cat <<'EOF'  | tee -a $BDIR/README.txt
 
 Read the documentation at :
 http://www.cycript.org/manual/
@@ -366,7 +370,7 @@ mkdir cydia-impactor
 cd cydia-impactor
 tar xvf ../cydia-impactor.tgz
 
-cat <<EOF  | tee -a $BDIR/README.txt
+cat <<'EOF'  | tee -a $BDIR/README.txt
 
 Building:
 ./build.sh
@@ -390,7 +394,7 @@ EOF
 ## AppMon
 pip install argparse frida flask termcolor dataset htmlentities --upgrade
 
-cat <<EOF  | tee -a $BDIR/README.txt
+cat <<'EOF'  | tee -a $BDIR/README.txt
 
 AppMon is an automated framework for monitoring and tampering system API calls of native apps on macOS, iOS and Android. It is based on Frida. You may call it the GreaseMonkey for native mobile apps. ;-) 
 
@@ -398,14 +402,14 @@ EOF
 
 
 
-cat <<EOF |tee -a $BDIR/README.txt
+cat <<'EOF' |tee -a $BDIR/README.txt
 Installed FireBaseScanner
 
 EOF
 
 ## Burp
 wget -c  "https://portswigger.net/burp/releases/download?product=community&version=2021.12.1&type=Jar" -O $DDIR/burp.jar
-cat <<EOF >$DDIR/burp
+cat <<'EOF' >$DDIR/burp
 java -jar $DDIR/burp.jar
 EOF
 sudo cp $DDIR/burp /usr/local/bin/burp
@@ -416,7 +420,7 @@ cd $DDIR
 l="https://github.com/zaproxy/zaproxy/releases/download/v2.11.1/ZAP_2.11.1_Linux.tar.gz"
 download_file "$l"
 tar xvzf "$(basename $l)"
-cat <<EOF | sudo tee /usr/local/bin/zap
+cat <<'EOF' | sudo tee /usr/local/bin/zap
 cd $DDIR/ZAP_2.11.1
 ./zap.sh
 EOF
@@ -425,7 +429,7 @@ sudo chmod +x /usr/local/bin/zap
 
 
 
-cat <<EOF |tee -a $BDIR/README.txt
+cat <<'EOF' |tee -a $BDIR/README.txt
 
 # Vim Setup
 
