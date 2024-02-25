@@ -22,7 +22,7 @@ DDIR="$BDIR/downloads"
 GDIR="$BDIR/git"
 
 
-mkdir -p $BDIR $DDIR
+mkdir -p $BDIR $DDIR $GDIR
 cp git-urls  $BDIR
 cd $BDIR
 
