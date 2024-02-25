@@ -23,14 +23,14 @@ GDIR="$BDIR/git"
 mkdir -p $BDIR $DDIR
 cd $BDIR
 
-echo "Forward 5555 to your host :) ssh -Nf -L 5555:localhost:5555 amitag@172.16.70.1"
+# echo "Forward 5555 to your host :) ssh -Nf -L 5555:localhost:5555 amitag@172.16.70.1"
 
 ## Check for the OS
 if [[ "$(cat /etc/redhat-release)" =~ Fedora.release* ]]
 then
-    echo "Found Fedora 35"
+    echo "Found Fedora"
 else
-    echo "Cannot continue on other than Fedora 35"
+    echo "Cannot continue on other than Fedora"
     exit
 fi
 
@@ -80,7 +80,7 @@ fi
 
 
 ## Install some packages with dnf and sudo
-sudo dnf install -y vim python2.7 android-tools androguard.noarch andriller androwarn adb-enhanced npm java-11-openjdk-devel wkhtmltopdf python3-gunicorn lynx
+sudo dnf install -y vim python2.7 android-tools adb-enhanced npm java-11-openjdk-devel wkhtmltopdf python3-gunicorn lynx
 cat <<EOF | tee -a $BDIR/README.txt
 # Readme for Mobile Hacking Setup
 
