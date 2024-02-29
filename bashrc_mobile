@@ -7,3 +7,8 @@ alias connect_mobile_disc='adb disconnect 127.0.0.1:5555'
 alias mobile_frida='adb push ~/mobilehacking/downloads/frida-server-15.1.14-android-arm /data/local/tmp/frida-server; adb shell "chmod 755 /data/local/tmp/frida-server"; adb shell "/data/local/tmp/frida-server" & '
 alias adb_devices='adb devices'
 
+
+alias studio="cd ~/tools/android-studio/bin/; ./studio.sh & "
+alias listavd='~/Android/Sdk/emulator/emulator -list-avds'
+alias startavd='~/Android/Sdk/emulator/emulator -no-audio  -lowram -no-boot-anim -avd '
+alias defaultavd='~/Android/Sdk/emulator/emulator -no-audio  -lowram -no-boot-anim -avd Pixel_2_API_24'
