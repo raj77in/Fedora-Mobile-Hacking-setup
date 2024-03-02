@@ -138,6 +138,11 @@ download_file "https://github.com/frida/frida/releases/download/15.1.14/frida-se
 download_file "https://github.com/frida/frida/releases/download/15.1.14/frida-server-$ver-android-x86.xz"
 download_file "https://github.com/frida/frida/releases/download/15.1.14/frida-server-$ver-android-x86_64.xz"
 
+download_file "https://github.com/pxb1988/dex2jar/releases/download/v2.4/dex-tools-v2.4.zip"
+download_file "https://github.com/java-decompiler/jd-gui/releases/download/v1.6.6/jd-gui-1.6.6-min.jar"
+download_file "https://github.com/java-decompiler/jd-gui/releases/download/v1.6.6/jd-gui-1.6.6.jar"
+download_file ""
+
 cat <<'EOF' | tee -a $BDIR/README.txt
 
 
